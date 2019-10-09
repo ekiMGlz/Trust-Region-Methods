@@ -1,0 +1,19 @@
+function [grad_f] = gradient(f, x)
+%GRADIENT Approximate the gradient of f at x
+%   Input:
+%       f: Anonymous function
+%       x: Function arguments
+%   Output:
+%       grad_f: Gradient of f at x
+%
+
+if ~iscolumn(x)
+    x = x';
+end
+
+n = length(x);
+grad_f = zeros(n, 1);
+E = spdiags(eps^(1/3) * (abs(x) + 1), 1, n, n);
+
+end
+
