@@ -12,10 +12,10 @@ function [x, msg, i] = mRC2(f, x0, itmax)
 %       msg: (String) 
 
     % Initialize some parameters used in the alg.
-    eta = 0.2;
+    eta = 0.1;
     tol = 1e-5;
-    delta_max = 8;
-    delta = 8;
+    delta_max = 1.5;
+    delta = 1;
     n = length(x0);
     
     % Obtain the first values of x_k, g_k and B_k
