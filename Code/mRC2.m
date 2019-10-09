@@ -15,7 +15,7 @@ function [x, msg, i] = mRC2(f, x0, itmax)
     eta = 0.2;
     tol = 1e-5;
     delta_max = 8;
-    delta = 1;
+    delta = 8;
     n = length(x0);
     
     % Obtain the first values of x_k, g_k and B_k
@@ -39,7 +39,7 @@ function [x, msg, i] = mRC2(f, x0, itmax)
     while norm(g_k, inf) > tol && i < itmax
         
         % Find the Cauchy Point
-        p_k = pDogleg(B_k, g_k, delta);
+        p_k = pDogLeg(B_k, g_k, delta);
         
         % Calculate the quality of the approximation
         quality = ( f(x_k + p_k) - f(x_k) ) ...
@@ -48,7 +48,7 @@ function [x, msg, i] = mRC2(f, x0, itmax)
         % Adjust the trust region radius based on the quality
         if quality < 0.25
             delta = 0.25 * delta;
-        elseif quality > 0.75 && abs(delta - norm(p_k)) < tol    
+        elseif quality > 0.75 && (delta - norm(p_k))/delta < 0.01    
             delta = min(delta_max, 2*delta);
         end
         
@@ -72,7 +72,10 @@ function [x, msg, i] = mRC2(f, x0, itmax)
     
     x = x_k;
     if norm(g_k, inf) < tol
-        msg = "Convirgio";
+        msg = "Convirgio.";
+        if l_k >= 0
+            msg = msg + "/n Hessiano es positivo (semi)definido, se encontro minimo local.";
+        end
     else
         msg = "lolno";
     end

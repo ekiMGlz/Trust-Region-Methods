@@ -1,4 +1,4 @@
-function [p] = pDogleg(B, g, delta)
+function [p] = pDogLeg(B, g, delta)
 %PCAUCHY Find the Cauchy Point for the trust region model of f
 %   Input:
 %       B: (Symmetric matrix) Approximated hessian of f at x_k
@@ -13,7 +13,7 @@ function [p] = pDogleg(B, g, delta)
     norm_pC = norm(pC);
     
     % If the norm of pC is approximately equal to delta, p = pC
-    if abs(norm_pC - delta) < 1e-5
+    if (delta - norm_pC)/delta < 0.01
         p = pC;
     else
         % Calculate Newton's Point, and check its norm to see if its within

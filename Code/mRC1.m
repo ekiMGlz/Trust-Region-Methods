@@ -15,7 +15,7 @@ function [x, msg, i] = mRC1(f, x0, itmax)
     eta = 0.2;
     tol = 1e-5;
     delta_max = 8;
-    delta = 1;
+    delta = 8;
     
     % Obtain the first values of x_k, g_k and B_k
     i = 0;
@@ -41,7 +41,7 @@ function [x, msg, i] = mRC1(f, x0, itmax)
         % Adjust the trust region radius based on the quality
         if quality < 0.25
             delta = 0.25 * delta;
-        elseif quality > 0.75 && abs(delta - norm(p_k)) < tol    
+        elseif quality > 0.75 && (delta - norm(p_k))/delta < 0.01    
             delta = min(delta_max, 2*delta);
         end
         
@@ -59,7 +59,11 @@ function [x, msg, i] = mRC1(f, x0, itmax)
     x = x_k;
     if norm(g_k, inf) < tol
         % Revisar eigs para ver q si es minimo
-        msg = "Convirgio";
+        msg = "Convirgio.";
+        l_k = min(eigs(B_k));
+        if l_k >= 0
+            msg = msg + "/n Hessiano es positivo (semi)definido, se encontro minimo local.";
+        end
     else
         msg = "lolno";
     end
