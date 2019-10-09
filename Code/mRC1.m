@@ -41,7 +41,7 @@ function [x, msg, i] = mRC1(f, x0, itmax)
         % Adjust the trust region radius based on the quality
         if quality < 0.25
             delta = 0.25 * delta;
-        elseif quality > 0.75 && (delta - norm(p_k)) < tol
+        elseif quality > 0.75 && abs(delta - norm(p_k)*(1.0101)) < tol    
             delta = min(delta_max, 2*delta);
         end
         
