@@ -10,3 +10,9 @@ x0 = [4, 4, 4, 4];
 x
 msg
 iters
+
+[x, msg, iters] = mRC2(f, x0, 10000);
+x
+msg
+iters
+

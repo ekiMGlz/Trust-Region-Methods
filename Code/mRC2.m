@@ -1,5 +1,5 @@
-function [x, msg, i] = mRC1(f, x0, itmax)
-%MRC1 Trust Region Method using the Cauchy Point and parameters 
+function [x, msg, i] = mRC2(f, x0, itmax)
+%MRC1 Trust Region Method using the Dogleg Point and parameters 
 %    Min. Quality (eta) = 0.1,
 %    Tolerance (tol) = 1e-5 
 %    Max. Trust Region Radius (delta_max) = 1.5
@@ -16,6 +16,7 @@ function [x, msg, i] = mRC1(f, x0, itmax)
     tol = 1e-5;
     delta_max = 8;
     delta = 1;
+    n = length(x0);
     
     % Obtain the first values of x_k, g_k and B_k
     i = 0;
@@ -27,12 +28,18 @@ function [x, msg, i] = mRC1(f, x0, itmax)
     end
     
     g_k = gradient(f, x_k);
+    
+    % Ensure B_k is s.p.d.
     B_k = hessian(f, x_k);
+    l_k = min(eigs(B_k));
+    if l_k <= 0
+       B_k = B_k + (1e-12 - 1.125 * l_k)*speye(n); 
+    end
     
     while norm(g_k, inf) > tol && i < itmax
         
         % Find the Cauchy Point
-        p_k = pCauchy(B_k, g_k, delta);
+        p_k = pDogleg(B_k, g_k, delta);
         
         % Calculate the quality of the approximation
         quality = ( f(x_k + p_k) - f(x_k) ) ...
@@ -48,9 +55,16 @@ function [x, msg, i] = mRC1(f, x0, itmax)
         % If the quality is above the minimum quality, then advance towards
         % p_k, and calculate the new gradient and hessian for x_k+1
         if quality > eta
+            
             x_k = x_k + p_k;
             g_k = gradient(f, x_k);
+            
             B_k = hessian(f, x_k);
+            l_k = min(eigs(B_k));
+            if l_k <= 0
+               B_k = B_k + (1e-12 - 1.125 * l_k)*speye(n); 
+            end
+            
             i = i + 1;
         end
         
@@ -58,7 +72,6 @@ function [x, msg, i] = mRC1(f, x0, itmax)
     
     x = x_k;
     if norm(g_k, inf) < tol
-        % Revisar eigs para ver q si es minimo
         msg = "Convirgio";
     else
         msg = "lolno";
