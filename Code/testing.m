@@ -1,17 +1,18 @@
-A = pascal(4);
-b = -ones(4, 1);
-f = @(x) 0.5 * x'*A*x + dot(b, x) + 1;
-g_f = @(x) 0.5*(A + A')*x + b;
-h_f = 0.5*(A+A');
+% A = pascal(4);
+% b = -ones(4, 1);
+% f = @(x) 0.5 * x'*A*x + dot(b, x) + 1;
+% g_f = @(x) 0.5*(A + A')*x + b;
+% h_f = 0.5*(A+A');
+% 
+% x0 = [4, 4, 4, 4];
 
-x0 = [4, 4, 4, 4];
+beale = @(x)  (1.5 - x(1) + x(1) * x(2))^2    ...
+            + (2.25 - x(1) + x(1) * x(2)^2)^2 ...
+            + (2.625 - x(1) + x(1) * x(2)^3)^2;
 
-[x, msg, iters] = mRC1(f, x0, 10000);
-x
-msg
-iters
+x_opt = [3; 0.5];
+x_0 = [-3; -3];
 
-[x, msg, iters] = mRC2(f, x0, 10000);
-x
-msg
-iters
+B = hessian(beale, x_0);
+min(eigs(B))
+
