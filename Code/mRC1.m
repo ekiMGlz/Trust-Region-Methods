@@ -58,14 +58,14 @@ function [x, msg, i] = mRC1(f, x0, itmax)
     
     x = x_k;
     if norm(g_k, inf) < tol
-        % Revisar eigs para ver q si es minimo
-        msg = "Convirgio.";
+        % Verify if the Hessian is (semi)definite positive to see if we've found a local minimum
+        msg = "Convergio en " + i + '" iteraciones. "';
         l_k = min(eigs(B_k));
         if l_k >= 0
-            msg = msg + "/n Hessiano es positivo (semi)definido, se encontro minimo local.";
+            msg = msg + "Hessiano es positivo (semi)definido, por lo tanto, se encontro minimo local.";
         end
     else
-        msg = "lolno";
+        msg = "El metodo no convergio";
     end
     
 end
