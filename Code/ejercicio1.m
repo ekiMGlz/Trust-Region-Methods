@@ -30,22 +30,37 @@ pC = pCauchy(B,g,delta);
 pDL = pDogLeg(B,g,delta);
 
 %% Grafica
-grid on
-hold on
-
-%Graficar direcciones
-quiver3(x_0(1),x_0(2),0,pC(1),pC(2),0,0,'r');
-quiver3(x_0(1),x_0(2),0,pN(1),pN(2),0,0,'g');
-quiver3(x_0(1),x_0(2),0,pDL(1),pDL(2),0,0,'b');
 
 % Graficar modelo cuadratico en la region de confianza
 fsurf(@(r,t) x_0(1)+r*cos(t), @(r,t)  x_0(2)+r*sin(t), @(r,t)  mc([r*cos(t);r*sin(t)]), [0,delta,-pi,pi], 'ShowContours', 'on')
-%fcontour(@(r,t)  mc([r*cos(t);r*sin(t)]))
+hold on
 
-% Graficar la region de confianza
-%viscircles(x_0',delta,'Color','y')
+%Graficar direcciones
+quiver3(x_0(1),x_0(2),0,pC(1),pC(2),0,0,'r','LineWidth',1.2);
+%hold on
+quiver3(x_0(1),x_0(2),0,pN(1),pN(2),0,0,'g','LineWidth',1.2);
+quiver3(x_0(1),x_0(2),0,pDL(1),pDL(2),0,0,'b','LineWidth',1.2);
+% 
+% % Graficar la region de confianza
+viscircles([x_0'],[delta],'Color','y')
+% 
+% %Graficar trayectoria dogleg
+x_N = x_0 + pN;
+x_C = x_0 + pC;
+D = x_N - x_C;
+plot3([x_C(1),x_N(1)], [x_C(2), x_N(2)],[0,0],'m')
 
-view(-129,28)
+x_DL = x_0 + pDL;
+
+plot3(x_0(1),x_0(2),0,'o')
+plot3(x_DL(1),x_DL(2),0,'x')
+
 hold off
+grid on
+
+%view(0,0)
+%view(-129,28)
+view(-147,21)
+
 
 
