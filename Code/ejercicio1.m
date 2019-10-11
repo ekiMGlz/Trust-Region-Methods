@@ -35,16 +35,15 @@ pDL = pDogLeg(B,g,delta);
 fsurf(@(r,t) x_0(1)+r*cos(t), @(r,t)  x_0(2)+r*sin(t), @(r,t)  mc([r*cos(t);r*sin(t)]), [0,delta,-pi,pi], 'ShowContours', 'on')
 hold on
 
-%Graficar direcciones
-quiver3(x_0(1),x_0(2),0,pC(1),pC(2),0,0,'r','LineWidth',1.2);
-%hold on
-quiver3(x_0(1),x_0(2),0,pN(1),pN(2),0,0,'g','LineWidth',1.2);
-quiver3(x_0(1),x_0(2),0,pDL(1),pDL(2),0,0,'b','LineWidth',1.2);
-% 
-% % Graficar la region de confianza
-viscircles([x_0'],[delta],'Color','y')
-% 
-% %Graficar trayectoria dogleg
+% Graficar direcciones
+quiver3(x_0(1), x_0(2), 0, pC(1), pC(2), 0, 0, 'Color', '#e50000',  'LineWidth', 1.2);
+quiver3(x_0(1), x_0(2), 0, pN(1), pN(2), 0, 0, 'Color', '#89fe05', 'LineWidth', 1.2);
+quiver3(x_0(1), x_0(2), 0, pDL(1), pDL(2), 0, 0, 'Color', '#0343df', 'LineWidth', 1.2);
+
+% Graficar la region de confianza
+viscircles(x_0', delta, 'LineStyle', '--', 'Color', '#000000');
+
+% Graficar trayectoria dogleg
 x_N = x_0 + pN;
 x_C = x_0 + pC;
 D = x_N - x_C;
@@ -61,6 +60,3 @@ grid on
 %view(0,0)
 %view(-129,28)
 view(-147,21)
-
-
-
