@@ -38,7 +38,7 @@ function [x, msg, i] = mRC2(f, x0, itmax)
     
     while norm(g_k, inf) > tol && i < itmax
         
-        % Find the Cauchy Point
+        % Find the Dogleg Point
         p_k = pDogLeg(B_k, g_k, delta);
         
         % Calculate the quality of the approximation

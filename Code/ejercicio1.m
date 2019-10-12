@@ -1,50 +1,50 @@
-%% Ejercicio 1. Graficar el modelo cuadratico en x_0 y las direcciones Newton, Cauchy, dogleg
+%% Exercise 1. Plot the quadratic model at x_0 and the Newton, Cauchy and dogleg direction
 
-% Definimos la funcion de Beale
+% Beale function 
 beale = @(x)  (1.5 - x(1) + x(1) * x(2))^2    ...
             + (2.25 - x(1) + x(1) * x(2)^2)^2 ...
             + (2.625 - x(1) + x(1) * x(2)^3)^2;
             
-% x_0 donde la matriz Hessiana es definida positiva
+% intial point x_0, where the Hessian is positive definite
 x_0 = [2; 0];
 
-% Calculamos las aproximaciones del Hessiano y del gradiente
+% Calculate the Hessian and the gradient approximations
 B = hessian(beale, x_0);
 g = gradient(beale, x_0);
 
-% Eigenvalor minimo es mayor a cero
+% minumun eigenvalue is greater than zero
 min(eigs(B))
 
-% Definicion del modelo cuadratico
+% Quadratic model definition
 fk = beale(x_0);
 mc = @(p) fk + dot(g, p) + 0.5*p'*B*p;
 
-% Calculamos las direcciones del punto Newton, Cauchy y dogleg
+% Calculate Newton's, Cauchy's and dogleg's direction
 pN = -B\g;
 
-% Definimos delta tal que el punto de Cauchy quede dentro de la region de confianza
-% y el punto de Newton quede fuera.
+% Define delta such that the Cauchy point is inside the trust region and
+% the Newton point is on the outside.
 delta = (norm(pN) + (g'*g/(g'*B*g)*norm(g)))*0.5;
 
 pC = pCauchy(B,g,delta);
 pDL = pDogLeg(B,g,delta);
 
-%% Grafica
+%% Plot
 
-% Graficar modelo cuadratico en la region de confianza
+% Plot the quadratic model in the trust region
 fsurf(@(r,t) x_0(1)+r*cos(t), @(r,t)  x_0(2)+r*sin(t), @(r,t)  mc([r*cos(t);r*sin(t)]), [0,delta,-pi,pi], 'ShowContours', 'on')
 colormap parula
 hold on
 
-% Graficar direcciones
+% Plot directions
 q_C = quiver3(x_0(1), x_0(2), 0, pC(1), pC(2), 0, 0, 'Color', '#99cc04',  'LineWidth', 1.5);
 q_N = quiver3(x_0(1), x_0(2), 0, pN(1), pN(2), 0, 0, 'Color', '#a55af4', 'LineWidth', 1.5);
 q_DL = quiver3(x_0(1), x_0(2), 0, pDL(1), pDL(2), 0, 0, 'Color', '#ff796c', 'LineWidth', 1.5);
 
-% Graficar la region de confianza
+% Plot the trust region's outline
 RC = viscircles(x_0', delta,'LineStyle', ':', 'Color', '#3c4142', 'LineWidth',1);
 
-% Graficar trayectoria dogleg
+% Plot dogleg's trajectory
 x_N = x_0 + pN;
 x_C = x_0 + pC;
 D = x_N - x_C;
