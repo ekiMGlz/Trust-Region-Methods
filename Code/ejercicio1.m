@@ -33,30 +33,30 @@ pDL = pDogLeg(B,g,delta);
 
 % Graficar modelo cuadratico en la region de confianza
 fsurf(@(r,t) x_0(1)+r*cos(t), @(r,t)  x_0(2)+r*sin(t), @(r,t)  mc([r*cos(t);r*sin(t)]), [0,delta,-pi,pi], 'ShowContours', 'on')
+colormap parula
 hold on
 
 % Graficar direcciones
-quiver3(x_0(1), x_0(2), 0, pC(1), pC(2), 0, 0, 'Color', '#e50000',  'LineWidth', 1.2);
-quiver3(x_0(1), x_0(2), 0, pN(1), pN(2), 0, 0, 'Color', '#89fe05', 'LineWidth', 1.2);
-quiver3(x_0(1), x_0(2), 0, pDL(1), pDL(2), 0, 0, 'Color', '#0343df', 'LineWidth', 1.2);
+q_C = quiver3(x_0(1), x_0(2), 0, pC(1), pC(2), 0, 0, 'Color', '#99cc04',  'LineWidth', 1.5);
+q_N = quiver3(x_0(1), x_0(2), 0, pN(1), pN(2), 0, 0, 'Color', '#a55af4', 'LineWidth', 1.5);
+q_DL = quiver3(x_0(1), x_0(2), 0, pDL(1), pDL(2), 0, 0, 'Color', '#ff796c', 'LineWidth', 1.5);
 
 % Graficar la region de confianza
-viscircles(x_0', delta, 'LineStyle', '--', 'Color', '#000000');
+RC = viscircles(x_0', delta,'LineStyle', ':', 'Color', '#3c4142', 'LineWidth',1);
 
 % Graficar trayectoria dogleg
 x_N = x_0 + pN;
 x_C = x_0 + pC;
 D = x_N - x_C;
-plot3([x_C(1),x_N(1)], [x_C(2), x_N(2)],[0,0],'m')
+
+plot3([x_C(1),x_N(1)], [x_C(2), x_N(2)],[0,0],'LineStyle', '--','Color','#a5a391','LineWidth',0.6)
 
 x_DL = x_0 + pDL;
 
-plot3(x_0(1),x_0(2),0,'o')
-plot3(x_DL(1),x_DL(2),0,'x')
+plot3(x_0(1),x_0(2),0,'o','MarkerFaceColor','#f9bc08','MarkerEdgeColor','#f9bc08')
+legend([q_C, q_N, q_DL, RC], {'Dirección Cauchy', 'Dirección Newton', 'Dirección Dogleg', 'Región de confianza'});
 
 hold off
 grid on
 
-%view(0,0)
-%view(-129,28)
 view(-147,21)
