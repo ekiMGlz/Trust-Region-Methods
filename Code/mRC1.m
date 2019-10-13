@@ -1,4 +1,4 @@
-function [x, msg, i] = mRC1(f, x0, itmax)
+function [x, msg] = mRC1(f, x0, itmax)
 %MRC1 Trust Region Method using the Cauchy Point and parameters 
 %    Min. Quality (eta) = 0.1,
 %    Tolerance (tol) = 1e-5 

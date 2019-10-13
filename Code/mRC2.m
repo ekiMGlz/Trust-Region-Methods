@@ -1,4 +1,4 @@
-function [x, msg, i] = mRC2(f, x0, itmax)
+function [x, msg] = mRC2(f, x0, itmax)
 %MRC1 Trust Region Method using the Dogleg Point and parameters 
 %    Min. Quality (eta) = 0.1,
 %    Tolerance (tol) = 1e-5 

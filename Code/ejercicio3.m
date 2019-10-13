@@ -23,14 +23,14 @@ Dogleg_trajectory = zeros(Dogleg_iters, 2);
 x_k = x_0;
 for i = 1:Cauchy_iters
     Cauchy_trajectory(i,:) = x_k;
-    [x_k, ~, ~] = mRC1(beale, x_k, 1);
+    [x_k, ~] = mRC1(beale, x_k, 1);
 end
 
 % Dogleg Trajectory
 x_k = x_0;
 for i = 1:Dogleg_iters
     Dogleg_trajectory(i,:) = x_k;
-    [x_k, ~,~] = mRC2(beale, x_k, 1);
+    [x_k, ~] = mRC2(beale, x_k, 1);
 end
 
 %% Plotting
