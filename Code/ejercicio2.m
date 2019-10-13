@@ -11,17 +11,18 @@ x_opt = [3; 0.5];
 
 %Calculate the number of itrations, the solution and the result of
 %convergence of the first method starting in x_0.
-[x, msg, i] = mRC1(beale, x_0, 10000)
+[x, msg, i] = mRC1(beale, x_0, 10000);
 
 %Calculate the error between the result of the first method and the optima
 %solution.
-norm(x-x_opt)
-sprintf('RC2')
+e = norm(x-x_opt);
+sprintf("[Cauchy] Valor de x: ( %g, %g), el error de aproximación es: %d", x(1),x(2), e)
 
 %Calculate the number of itrations, the solution and the result of
 %convergence of the second method starting in x_0.
-[x, msg, i] = mRC2(beale, x_0, 10000)
+[x, msg, i] = mRC2(beale, x_0, 10000);
 
 %Calculate the error between the result of the second method and the optima
 %solution.
-norm(x-x_opt)
+e = norm(x-x_opt);
+sprintf("[DogLeg] Valor de x: ( %g, %g), el error de aproximación es: %d", x(1),x(2), e)
